@@ -25,10 +25,6 @@ namespace Appointments.DataAccess
             modelBuilder.Entity<CustomerEntity>()
                 .HasIndex(a => a.Email)
                 .IsUnique();
-
-            modelBuilder.Entity<CustomerEntity>()
-                .HasIndex(a => a.Phone)
-                .IsUnique();
         }
     }
 }

@@ -13,10 +13,9 @@ namespace Appointments.Model
         [Required]
         public string CustomerName { get; set; }
 
-        [EmailOrPhoneRequiredAttribute]
+        [Required]
         public string Email { get; set; }
 
-        [EmailOrPhoneRequiredAttribute]
         public string Phone { get; set; }
     }
 }

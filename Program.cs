@@ -22,16 +22,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
         new MySqlServerVersion(new Version(8, 0, 34)) // Replace with your actual MySQL server version
     );
 });
-
-var containerBuilder = new ContainerBuilder();
-
-containerBuilder.RegisterType<CustomerAppointmentService>().As<ICustomerAppointmentService>(); // Example registration for CustomerAppointmentService
-
-containerBuilder.Populate(builder.Services);
-
-var container = containerBuilder.Build();
-
-builder.Services.AddSingleton<IServiceProviderFactory<ContainerBuilder>>(new AutofacServiceProviderFactory());
+builder.Services.AddScoped<ICustomerAppointmentService, CustomerAppointmentService>();
+builder.Services.AddScoped<ICustomerService, CustomerService>();
+builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 
 var app = builder.Build();
 

@@ -24,16 +24,18 @@ namespace Appointments.Controllers
                 return BadRequest(ModelState);
             }
 
+            var data = new { Name = "John", Age = 30 };
+
             try
             {
                 _customerAppointmentService.BookAppointment(customerAppointment);
-                var data = new { Name = "John", Age = 30 };
-
+                
                 return Json(data);
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                Console.WriteLine($"Error occurred while creating appointment: {ex.Message}, {ex.StackTrace}");
+                return Json(data);
             }
         }
     }

@@ -4,6 +4,6 @@ namespace Appointments.Services
 {
     public interface IAppointmentService
     {
-        void CreateAppointment(AppointmentModel appointment);
+        AppointmentModel CreateAppointment(AppointmentModel appointment);
     }
 }

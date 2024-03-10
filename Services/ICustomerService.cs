@@ -4,6 +4,7 @@ namespace Appointments.Services
 {
     public interface ICustomerService
     {
-        void CreateCustomer(CustomerModel customer);
+        CustomerModel CreateCustomer(CustomerModel customer);
+        CustomerModel RetrieveCustomerByEmail(string email);
     }
 }

@@ -1,4 +1,5 @@
-﻿using Appointments.DataAccess;
+﻿using Appointments.Constant;
+using Appointments.DataAccess;
 using Appointments.Model;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -14,18 +15,21 @@ namespace Appointments.Services
             _dbContext = dbContext;
         }
 
-        public void CreateAppointment(AppointmentModel appointment)
+        public AppointmentModel CreateAppointment(AppointmentModel appointment)
         {
+            appointment.Status = AppointmentStatus.Booked;
+            appointment.CreatedOn = DateTime.Now;
             _dbContext.Appointments.Add(appointment);
 
             try
             {
                 _dbContext.SaveChanges();
                 Console.WriteLine("Appointment saved successfully.");
+                return appointment;
             }
-            catch (Exception ex)
+            catch
             {
-                Console.WriteLine($"Error occurred while saving appointment: {ex.Message}");
+                throw;
             }
         }
     }
