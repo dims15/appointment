@@ -13,7 +13,6 @@ namespace Appointments.Entities
         public DateTime AppointmentDate { get; set; }
         public string Status { get; set; }
         public DateTime CreatedOn { get; set; }
-        
         public CustomerEntity Customer { get; set; }
 
         public AppointmentEntity()

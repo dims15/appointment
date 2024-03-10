@@ -1,6 +1,9 @@
-﻿using Appointments.Model;
+﻿using Appointments.Entities;
+using Appointments.Model;
 using Appointments.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 namespace Appointments.Controllers
 {
@@ -9,10 +12,12 @@ namespace Appointments.Controllers
     public class CustomerAppointmentController : Controller
     {
         private readonly ICustomerAppointmentService _customerAppointmentService;
+        private readonly ICustomerService _customerService;
 
-        public CustomerAppointmentController(ICustomerAppointmentService customerAppointmentService)
+        public CustomerAppointmentController(ICustomerAppointmentService customerAppointmentService, ICustomerService customerService)
         {
             _customerAppointmentService = customerAppointmentService;
+            _customerService = customerService;
         }
 
         [HttpPost]
@@ -49,6 +54,24 @@ namespace Appointments.Controllers
                 }
 
                 return Ok(appointment);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error occurred while retrieving appointment: {ex.Message}, {ex.StackTrace}");
+                return StatusCode(500, "An error occurred while processing the request");
+            }
+        }
+
+        [HttpGet("today")]
+        public IActionResult GetUsersThatHaveAppointmentsByToday()
+        {
+            try
+            {
+
+                DateTime appointmentDate = DateTime.Today;
+                List<CustomerListWithAppointmentsModel> usersWithAppointment = _customerService.RetrieveUsersByAppointmentDate(appointmentDate);
+
+                return Ok(usersWithAppointment);
             }
             catch (Exception ex)
             {

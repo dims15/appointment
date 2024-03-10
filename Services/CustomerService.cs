@@ -50,5 +50,30 @@ namespace Appointments.Services
 
             return _mapper.Map<CustomerModel>(customer);
         }
+
+        public List<CustomerListWithAppointmentsModel> RetrieveUsersByAppointmentDate(DateTime appointmentDate)
+        {
+            List<CustomerListWithAppointmentsModel> customers = _dbContext.Customers
+                .Include(x => x.Appointments)
+                .Where(c => c.Appointments.Any(a => a.AppointmentDate.Date >= appointmentDate.Date && a.AppointmentDate.Date < appointmentDate.AddDays(1).Date))
+                .Select(c => new CustomerListWithAppointmentsModel
+                {
+                    Id = c.Id,
+                    CustomerName = c.CustomerName,
+                    Email = c.Email,
+                    Phone = c.Phone,
+                    Appointments = c.Appointments
+                        .Select(a => new AppointmentUserModel
+                        {
+                            TokenNumber = a.TokenNumber,
+                            AppointmentDate = a.AppointmentDate,
+                            Status = a.Status,
+                            CreatedOn = a.CreatedOn
+                        })
+                })
+                .ToList();
+
+            return customers;
+        }
     }
 }
