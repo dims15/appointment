@@ -2,6 +2,8 @@
 using Appointments.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 namespace Appointments.Controllers
 {
@@ -28,9 +30,9 @@ namespace Appointments.Controllers
 
             try
             {
-                _customerAppointmentService.BookAppointment(customerAppointment);
-                
-                return Json(data);
+                AppointmentModel createdAppointment = _customerAppointmentService.BookAppointment(customerAppointment);
+
+                return Ok(createdAppointment);
             }
             catch (Exception ex)
             {

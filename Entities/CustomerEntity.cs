@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Appointments.Entities
 {
@@ -9,7 +10,7 @@ namespace Appointments.Entities
         public string CustomerName { get; set; }
         public string Email { get; set; }
         public string? Phone { get; set; }
-
+        [JsonIgnore]
         public List<AppointmentEntity> Appointments { get; set; }
     }
 }

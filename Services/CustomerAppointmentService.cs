@@ -23,7 +23,7 @@ namespace Appointments.Services
             _dbContext = dbContext;
         }
 
-        public void BookAppointment(CustomerAppointmentModel customerAppointment)
+        public AppointmentModel BookAppointment(CustomerAppointmentModel customerAppointment)
         {
             CustomerModel customer = _mapper.Map<CustomerModel>(customerAppointment);
             AppointmentModel appointment = _mapper.Map<AppointmentModel>(customerAppointment);
@@ -32,21 +32,17 @@ namespace Appointments.Services
             {
                 try
                 {
-                    CustomerModel createdCustomer = _customerService.RetrieveCustomerByEmail(customer.Email);
+                    CustomerModel existingCustomer = _customerService.RetrieveCustomerByEmail(customer.Email);
 
-                    if (createdCustomer == null)
+                    if (existingCustomer == null)
                     {
-                        createdCustomer = _customerService.CreateCustomer(customer);
-                        if (createdCustomer == null)
-                        {
-                            transaction.Rollback();
-                            return;
-                        }
+                        existingCustomer = _customerService.CreateCustomer(customer);
                     }
 
-                    appointment.CustomerID = createdCustomer.Id;
-                    _appointmentService.CreateAppointment(appointment);
+                    appointment.CustomerID = existingCustomer.Id;
+                    AppointmentModel createdAppointment = _appointmentService.CreateAppointment(appointment);
                     transaction.Commit();
+                    return createdAppointment;
                 }
                 catch (Exception ex)
                 {
