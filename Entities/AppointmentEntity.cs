@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace Appointments.Entities
@@ -22,7 +23,11 @@ namespace Appointments.Entities
 
         private string GenerateToken()
         {
-            return $"A-{DateTime.Now:ddMMyyyyHHmmss}";
+            Random random = new Random();
+            int randomNumber = random.Next(10000);
+            string randomString = randomNumber.ToString("D4");
+
+            return $"A-{DateTime.Now:ddMMyyyyHHmmss}{randomString}";
         }
     }
 }

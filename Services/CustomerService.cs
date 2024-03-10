@@ -40,7 +40,15 @@ namespace Appointments.Services
             CustomerEntity customer = _dbContext.Customers
             .FirstOrDefault(c => c.Email == email);
 
-            return _mapper.Map<CustomerModel>(customer);   
+            return _mapper.Map<CustomerModel>(customer);
+        }
+
+        public CustomerModel RetrieveCustomerById(int id)
+        {
+            CustomerEntity customer = _dbContext.Customers
+            .FirstOrDefault(c => c.Id == id);
+
+            return _mapper.Map<CustomerModel>(customer);
         }
     }
 }

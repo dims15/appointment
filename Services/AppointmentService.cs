@@ -1,5 +1,6 @@
 ﻿using Appointments.Constant;
 using Appointments.DataAccess;
+using Appointments.Entities;
 using Appointments.Model;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -9,10 +10,12 @@ namespace Appointments.Services
     public class AppointmentService : IAppointmentService
     {
         private readonly ApplicationDbContext _dbContext;
+        private readonly IMapper _mapper;
 
-        public AppointmentService(ApplicationDbContext dbContext)
+        public AppointmentService(ApplicationDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
         }
 
         public AppointmentModel CreateAppointment(AppointmentModel appointment)

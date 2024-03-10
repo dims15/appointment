@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Appointments.Controllers
 {
@@ -12,10 +13,12 @@ namespace Appointments.Controllers
     public class CustomerAppointmentController : Controller
     {
         private readonly ICustomerAppointmentService _customerAppointmentService;
+        private readonly IAppointmentService _appointmentService;
 
-        public CustomerAppointmentController(ICustomerAppointmentService customerAppointmentService)
+        public CustomerAppointmentController(ICustomerAppointmentService customerAppointmentService, IAppointmentService appointmentService)
         {
             _customerAppointmentService = customerAppointmentService;
+            _appointmentService = appointmentService;
         }
 
         [HttpPost]
@@ -26,8 +29,6 @@ namespace Appointments.Controllers
                 return BadRequest(ModelState);
             }
 
-            var data = new { Name = "John", Age = 30 };
-
             try
             {
                 AppointmentModel createdAppointment = _customerAppointmentService.BookAppointment(customerAppointment);
@@ -37,7 +38,28 @@ namespace Appointments.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine($"Error occurred while creating appointment: {ex.Message}, {ex.StackTrace}");
-                return Json(data);
+                return StatusCode(500, "An error occurred while processing the request");
+            }
+        }
+
+        [HttpGet("{tokenNumber}")]
+        public IActionResult GetByTokenNumber(string tokenNumber)
+        {
+            try
+            {
+                AppointmentModel appointment = _customerAppointmentService.RetrieveUserAppointment(tokenNumber);
+
+                if (appointment == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(appointment);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error occurred while creating appointment: {ex.Message}, {ex.StackTrace}");
+                return StatusCode(500, "An error occurred while processing the request");
             }
         }
     }

@@ -7,5 +7,6 @@ namespace Appointments.Services
     {
         List<CustomerAppointmentModel> GetAllAppointments();
         AppointmentModel BookAppointment(CustomerAppointmentModel customerAppointment);
+        AppointmentModel RetrieveUserAppointment(string tokenNumber);
     }
 }

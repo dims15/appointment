@@ -1,4 +1,5 @@
 ﻿using Appointments.DataAccess;
+using Appointments.Entities;
 using Appointments.Model;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -50,6 +51,16 @@ namespace Appointments.Services
                     throw;
                 }
             }
+        }
+
+        public AppointmentModel RetrieveUserAppointment(string tokenNumber)
+        {
+            AppointmentEntity appointment = _dbContext.Appointments
+            .FirstOrDefault(c => c.TokenNumber == tokenNumber);
+
+            AppointmentModel appointmentModel = _mapper.Map<AppointmentModel>(appointment);
+            appointmentModel.Customer = _customerService.RetrieveCustomerById(appointmentModel.CustomerID);
+            return appointmentModel;
         }
 
         public List<CustomerAppointmentModel> GetAllAppointments()
