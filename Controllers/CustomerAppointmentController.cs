@@ -1,10 +1,6 @@
 ﻿using Appointments.Model;
 using Appointments.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Text.Json.Serialization;
-using System.Text.Json;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Appointments.Controllers
 {
@@ -13,12 +9,10 @@ namespace Appointments.Controllers
     public class CustomerAppointmentController : Controller
     {
         private readonly ICustomerAppointmentService _customerAppointmentService;
-        private readonly IAppointmentService _appointmentService;
 
-        public CustomerAppointmentController(ICustomerAppointmentService customerAppointmentService, IAppointmentService appointmentService)
+        public CustomerAppointmentController(ICustomerAppointmentService customerAppointmentService)
         {
             _customerAppointmentService = customerAppointmentService;
-            _appointmentService = appointmentService;
         }
 
         [HttpPost]
