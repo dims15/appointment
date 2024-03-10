@@ -56,11 +56,10 @@ namespace Appointments.Services
         public AppointmentModel RetrieveUserAppointment(string tokenNumber)
         {
             AppointmentEntity appointment = _dbContext.Appointments
-            .FirstOrDefault(c => c.TokenNumber == tokenNumber);
+                .Include(x => x.Customer)
+                .FirstOrDefault(c => c.TokenNumber == tokenNumber);
 
-            AppointmentModel appointmentModel = _mapper.Map<AppointmentModel>(appointment);
-            appointmentModel.Customer = _customerService.RetrieveCustomerById(appointmentModel.CustomerID);
-            return appointmentModel;
+            return _mapper.Map<AppointmentModel>(appointment);
         }
 
         public List<CustomerAppointmentModel> GetAllAppointments()
