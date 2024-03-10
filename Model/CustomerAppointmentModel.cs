@@ -1,15 +1,22 @@
 ﻿using Appointments.Entities;
+using Appointments.Model.Validation;
+using System.ComponentModel.DataAnnotations;
 
 namespace Appointments.Model
 {
     public class CustomerAppointmentModel
     {
-        public DateTime AppointmentDate { get; set; }
-        public string Status { get; set; }
-        public int? TokenNumber { get; set; }
-        public DateTime CreatedOn { get; set; }
-        public string Name { get; set; }
+        [Required(ErrorMessage = "Appointment date is required")]
+        [DateFormat(ErrorMessage = "Invalid date format. Use dd-MM-yyyy")]
+        public string AppointmentDate { get; set; }
+
+        [Required]
+        public string CustomerName { get; set; }
+
+        [EmailOrPhoneRequiredAttribute]
         public string Email { get; set; }
+
+        [EmailOrPhoneRequiredAttribute]
         public string Phone { get; set; }
     }
 }

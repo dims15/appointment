@@ -7,16 +7,16 @@ namespace Appointments.Services
     public class CustomerAppointmentService : ICustomerAppointmentService
     {
         private readonly IMapper _mapper;
-        private readonly ApplicationDbContext _dbContext;
         private readonly IAppointmentService _appointmentService;
+        private readonly ICustomerService _customerService;
 
         public CustomerAppointmentService(IMapper mapper,
-            ApplicationDbContext dbContext,
-            IAppointmentService appointmentService)
+            IAppointmentService appointmentService,
+            ICustomerService customerService)
         {
             _mapper = mapper;
-            _dbContext = dbContext;
             _appointmentService = appointmentService;
+            _customerService = customerService;
         }
 
         public void BookAppointment(CustomerAppointmentModel customerAppointment)
@@ -24,6 +24,7 @@ namespace Appointments.Services
             CustomerModel customer = _mapper.Map<CustomerModel>(customerAppointment);
             AppointmentModel appointment = _mapper.Map<AppointmentModel>(customerAppointment);
 
+            _customerService.CreateCustomer(customer);
             _appointmentService.CreateAppointment(appointment);
         }
 

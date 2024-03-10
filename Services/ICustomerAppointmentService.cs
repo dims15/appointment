@@ -6,6 +6,6 @@ namespace Appointments.Services
     public interface ICustomerAppointmentService
     {
         List<CustomerAppointmentModel> GetAllAppointments();
-        void BookAppointment(CustomerAppointmentModel appointment);
+        void BookAppointment(CustomerAppointmentModel customerAppointment);
     }
 }
