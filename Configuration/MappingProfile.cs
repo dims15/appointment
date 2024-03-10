@@ -9,10 +9,10 @@ namespace Appointments.Configuration
     {
         public MappingProfile()
         {
-            CreateMap<CustomerAppointmentModel, CustomerModel>();
+            CreateMap<CustomerAppointmentModel, CustomerEntity>();
             CreateMap<CustomerEntity, CustomerModel>();
             CreateMap<AppointmentEntity, AppointmentModel>();
-            CreateMap<CustomerAppointmentModel, AppointmentModel>()
+            CreateMap<CustomerAppointmentModel, AppointmentEntity>()
                 .ForMember(dest => dest.AppointmentDate, opt => opt.MapFrom(src => DateTime.ParseExact(src.AppointmentDate, "dd-MM-yyyy", CultureInfo.InvariantCulture)));
         }
     }

@@ -18,7 +18,7 @@ namespace Appointments.Services
             _mapper = mapper;
         }
 
-        public AppointmentModel CreateAppointment(AppointmentModel appointment)
+        public AppointmentEntity CreateAppointment(AppointmentEntity appointment)
         {
             appointment.Status = AppointmentStatus.Booked;
             appointment.CreatedOn = DateTime.Now;

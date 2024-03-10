@@ -4,6 +4,7 @@ using Appointments.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using Appointments.Model.ResponseBody;
 
 namespace Appointments.Controllers
 {
@@ -30,7 +31,7 @@ namespace Appointments.Controllers
 
             try
             {
-                AppointmentModel createdAppointment = _customerAppointmentService.BookAppointment(customerAppointment);
+                AppointmentEntity createdAppointment = _customerAppointmentService.BookAppointment(customerAppointment);
 
                 return Ok(createdAppointment);
             }
@@ -69,7 +70,7 @@ namespace Appointments.Controllers
             {
 
                 DateTime appointmentDate = DateTime.Today;
-                List<CustomerListWithAppointmentsModel> usersWithAppointment = _customerService.RetrieveUsersByAppointmentDate(appointmentDate);
+                List<CustomerWithListAppointmentsModel> usersWithAppointment = _customerService.RetrieveUsersByAppointmentDate(appointmentDate);
 
                 return Ok(usersWithAppointment);
             }

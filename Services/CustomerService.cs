@@ -1,6 +1,7 @@
 ﻿using Appointments.DataAccess;
 using Appointments.Entities;
 using Appointments.Model;
+using Appointments.Model.ResponseBody;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,7 +20,7 @@ namespace Appointments.Services
             _mapper = mapper;
         }
 
-        public CustomerModel CreateCustomer(CustomerModel customer)
+        public CustomerEntity CreateCustomer(CustomerEntity customer)
         {
             _dbContext.Customers.Add(customer);
 
@@ -35,12 +36,12 @@ namespace Appointments.Services
             }
         }
 
-        public CustomerModel RetrieveCustomerByEmail(string email)
+        public CustomerEntity RetrieveCustomerByEmail(string email)
         {
             CustomerEntity customer = _dbContext.Customers
             .FirstOrDefault(c => c.Email == email);
 
-            return _mapper.Map<CustomerModel>(customer);
+            return customer;
         }
 
         public CustomerModel RetrieveCustomerById(int id)
@@ -51,27 +52,29 @@ namespace Appointments.Services
             return _mapper.Map<CustomerModel>(customer);
         }
 
-        public List<CustomerListWithAppointmentsModel> RetrieveUsersByAppointmentDate(DateTime appointmentDate)
+        public List<CustomerWithListAppointmentsModel> RetrieveUsersByAppointmentDate(DateTime appointmentDate)
         {
-            List<CustomerListWithAppointmentsModel> customers = _dbContext.Customers
-                .Include(x => x.Appointments)
-                .Where(c => c.Appointments.Any(a => a.AppointmentDate.Date >= appointmentDate.Date && a.AppointmentDate.Date < appointmentDate.AddDays(1).Date))
-                .Select(c => new CustomerListWithAppointmentsModel
-                {
-                    Id = c.Id,
-                    CustomerName = c.CustomerName,
-                    Email = c.Email,
-                    Phone = c.Phone,
-                    Appointments = c.Appointments
-                        .Select(a => new AppointmentUserModel
-                        {
-                            TokenNumber = a.TokenNumber,
-                            AppointmentDate = a.AppointmentDate,
-                            Status = a.Status,
-                            CreatedOn = a.CreatedOn
-                        })
-                })
-                .ToList();
+            List<CustomerWithListAppointmentsModel> customers = _dbContext.Customers
+            .Include(x => x.Appointments)
+            .Where(c => c.Appointments.Any(a => a.AppointmentDate.Date >= appointmentDate.Date && a.AppointmentDate.Date < appointmentDate.AddDays(1).Date))
+            .Select(c => new CustomerWithListAppointmentsModel
+            {
+                Id = c.Id,
+                CustomerName = c.CustomerName,
+                Email = c.Email,
+                Phone = c.Phone,
+                Appointments = c.Appointments
+                    .Where(a => a.AppointmentDate.Date >= appointmentDate.Date && a.AppointmentDate.Date < appointmentDate.AddDays(1).Date)
+                    .Select(a => new AppointmentModel
+                    {
+                        TokenNumber = a.TokenNumber,
+                        AppointmentDate = a.AppointmentDate,
+                        Status = a.Status,
+                        CreatedOn = a.CreatedOn
+                    })
+                    .ToList()
+            })
+            .ToList();
 
             return customers;
         }

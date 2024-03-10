@@ -1,9 +1,10 @@
-﻿using Appointments.Model;
+﻿using Appointments.Entities;
+using Appointments.Model;
 
 namespace Appointments.Services
 {
     public interface IAppointmentService
     {
-        AppointmentModel CreateAppointment(AppointmentModel appointment);
+        AppointmentEntity CreateAppointment(AppointmentEntity appointment);
     }
 }

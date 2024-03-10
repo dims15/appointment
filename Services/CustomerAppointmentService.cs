@@ -24,16 +24,16 @@ namespace Appointments.Services
             _dbContext = dbContext;
         }
 
-        public AppointmentModel BookAppointment(CustomerAppointmentModel customerAppointment)
+        public AppointmentEntity BookAppointment(CustomerAppointmentModel customerAppointment)
         {
-            CustomerModel customer = _mapper.Map<CustomerModel>(customerAppointment);
-            AppointmentModel appointment = _mapper.Map<AppointmentModel>(customerAppointment);
+            CustomerEntity customer = _mapper.Map<CustomerEntity>(customerAppointment);
+            AppointmentEntity appointment = _mapper.Map<AppointmentEntity>(customerAppointment);
 
             using (var transaction = _dbContext.Database.BeginTransaction())
             {
                 try
                 {
-                    CustomerModel existingCustomer = _customerService.RetrieveCustomerByEmail(customer.Email);
+                    CustomerEntity existingCustomer = _customerService.RetrieveCustomerByEmail(customer.Email);
 
                     if (existingCustomer == null)
                     {
@@ -41,7 +41,7 @@ namespace Appointments.Services
                     }
 
                     appointment.CustomerID = existingCustomer.Id;
-                    AppointmentModel createdAppointment = _appointmentService.CreateAppointment(appointment);
+                    AppointmentEntity createdAppointment = _appointmentService.CreateAppointment(appointment);
                     transaction.Commit();
                     return createdAppointment;
                 }
