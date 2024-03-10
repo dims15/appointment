@@ -5,7 +5,6 @@ namespace Appointments.Model
     public class CustomerAppointmentModel
     {
         public DateTime AppointmentDate { get; set; }
-        public TimeSpan AppointmentTime { get; set; }
         public string Status { get; set; }
         public int? TokenNumber { get; set; }
         public DateTime CreatedOn { get; set; }
