@@ -12,5 +12,15 @@ namespace Appointments.Entities
         public DateTime CreatedOn { get; set; }
 
         public CustomerEntity Customer { get; set; }
+
+        public AppointmentEntity()
+        {
+            TokenNumber = GenerateToken();
+        }
+
+        private string GenerateToken()
+        {
+            return $"A-{DateTime.Now:ddMMyyyyHHmmss}";
+        }
     }
 }
