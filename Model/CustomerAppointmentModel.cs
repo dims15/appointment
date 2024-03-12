@@ -7,7 +7,8 @@ namespace Appointments.Model
     public class CustomerAppointmentModel
     {
         [Required(ErrorMessage = "Appointment date is required")]
-        [DateFormat(ErrorMessage = "Invalid date format. Use dd-MM-yyyy")]
+        [DateFormat]
+        [BookingDateMustBeTodayOrLater]
         public string AppointmentDate { get; set; }
 
         [Required]
