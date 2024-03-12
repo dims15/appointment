@@ -22,6 +22,8 @@ namespace Appointments.Services
         {
             appointment.Status = AppointmentStatus.Booked;
             appointment.CreatedOn = DateTime.Now;
+            appointment.AppointmentDate = OffDayBookingChanger(appointment.AppointmentDate);
+
             _dbContext.Appointments.Add(appointment);
 
             try
@@ -33,6 +35,27 @@ namespace Appointments.Services
             catch
             {
                 throw;
+            }
+        }
+
+        private DateTime OffDayBookingChanger(DateTime bookingDate)
+        {
+            if (bookingDate.DayOfWeek == DayOfWeek.Saturday || bookingDate.DayOfWeek == DayOfWeek.Sunday)
+            {
+                return OffDayBookingChanger(bookingDate.AddDays(1));
+            }
+            else
+            {
+                bool offDayIncludedInRecord = _dbContext.OffDays.Any(x => x.OffDayDate == bookingDate);
+
+                if (offDayIncludedInRecord)
+                {
+                    return OffDayBookingChanger(bookingDate.AddDays(1));
+                }
+                else
+                {
+                    return bookingDate;
+                }
             }
         }
     }
