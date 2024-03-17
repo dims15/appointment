@@ -24,11 +24,13 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8080:80"
+      - "443:443"
     depends_on:
         mysql-db:
           condition: service_healthy
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      # - ASPNETCORE_URLS=https://+:443;http://+:80
 
 volumes:
   mysql-data:
